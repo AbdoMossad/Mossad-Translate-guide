@@ -1,42 +1,39 @@
-document.getElementById('translate-button').addEventListener('click', function(event) {
-    const htmlInput = document.getElementById('html-input').value;
-    if (htmlInput.trim()) {
-        translateHTML(htmlInput);
-    }
-});
+function translateHTML() {
+    const htmlInput = document.getElementById('htmlInput').value;
+    const replaceInput = document.getElementById('replaceInput').value;
 
-function translateHTML(html) {
-    // Simulate translation (Replace this with actual translation logic)
-    const translatedHTML = html.replace(/Hello/g, 'مرحبا'); // Example translation
+    // Extract text content and replace tags
+    let translatedHTML = htmlInput;
 
-    // Save translated HTML to localStorage for use in other pages
-    localStorage.setItem('translatedHTML', translatedHTML);
-    document.getElementById('translation-link').style.display = 'block';
-}
-
-document.getElementById('save-replacements')?.addEventListener('click', function() {
-    // Handle manual replacement logic
-    const manualReplacements = document.getElementById('manual-replacements').value;
-    console.log('Manual Replacements:', manualReplacements);
-    // Here you can implement the logic to apply manual replacements
-});
-
-document.getElementById('copy-code')?.addEventListener('click', function() {
-    const code = localStorage.getItem('translatedHTML');
-    if (code) {
-        navigator.clipboard.writeText(code).then(() => {
-            alert('Code copied to clipboard!');
+    // Perform manual replacements
+    if (replaceInput) {
+        const replacements = replaceInput.split(',');
+        replacements.forEach(replacement => {
+            const [find, replace] = replacement.split('|');
+            const regex = new RegExp(find, 'gi');
+            translatedHTML = translatedHTML.replace(regex, replace);
         });
     }
-});
 
-window.addEventListener('load', function() {
-    if (document.getElementById('translated-code')) {
-        const code = localStorage.getItem('translatedHTML');
-        document.getElementById('translated-code').value = code;
-    }
-    if (document.getElementById('preview-frame')) {
-        const code = localStorage.getItem('translatedHTML');
-        document.getElementById('preview-frame').srcdoc = code;
-    }
-});
+    // Translate text to Arabic using a simple mock function (replace with real translation logic/API)
+    translatedHTML = translatedHTML.replace(/(>[^<]+<)/g, match => {
+        const text = match.slice(1, -1);
+        const translatedText = pseudoTranslateToArabic(text);
+        return `>${translatedText}<`;
+    });
+
+    // Display the translated HTML
+    document.getElementById('output').textContent = translatedHTML;
+}
+
+function pseudoTranslateToArabic(text) {
+    // Mock translation function - Replace with actual translation logic
+    return text.split('').reverse().join(''); // Just a dummy reversal to simulate translation
+}
+
+function copyCode() {
+    const output = document.getElementById('output');
+    navigator.clipboard.writeText(output.textContent)
+        .then(() => alert('Code copied to clipboard!'))
+        .catch(err => console.error('Failed to copy text: ', err));
+}

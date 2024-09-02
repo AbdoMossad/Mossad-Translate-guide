@@ -2,17 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Translator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>HTML Translator</h1>
-    <textarea id="html-input" placeholder="Paste your HTML code here..." rows="10" cols="50"></textarea>
-    <button id="translate-button">Translate HTML</button>
-    <div id="translation-link" style="display:none;">
-        <a href="translate.html" id="translation-url">Go to Translation Page</a>
-    </div>
+
+    <!-- Input Box for HTML Code -->
+    <label for="htmlInput">Enter HTML Code:</label>
+    <textarea id="htmlInput" placeholder="<h1>Example</h1>"></textarea>
+
+    <!-- Input Box for Manual Replacements -->
+    <label for="replaceInput">Enter Replacements (format: &lt;tag1&gt;|&lt;tag2&gt;):</label>
+    <textarea id="replaceInput" placeholder="<h1>|<p>,<b>|<strong>"></textarea>
+
+    <!-- Button to Translate -->
+    <button onclick="translateHTML()">Translate to Arabic</button>
+
+    <!-- Button to Copy Code -->
+    <button onclick="copyCode()">Copy Code</button>
+
+    <!-- Output Box for Translated HTML -->
+    <div class="output" id="output"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
