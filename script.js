@@ -24,11 +24,11 @@ function translateToArabic(html) {
     const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
   
     return fetch(url)
-     .then(response => response.json())
-     .then(data => {
+    .then(response => response.json())
+    .then(data => {
         const translatedText = data[0][0][0];
-        const translatedHtml = html.replace(/>(.*?)</g, (match, group) => {
-          return `>${translateText(group)}<`;
+        const translatedHtml = html.replace(/<[^>]*>([^<]+)<\/[^>]*>/g, (match, group) => {
+          return match.replace(group, translateText(group));
         });
         return translatedHtml;
       });
@@ -45,8 +45,8 @@ function translateToArabic(html) {
     };
     const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
     return fetch(url)
-     .then(response => response.json())
-     .then(data => data[0][0][0]);
+    .then(response => response.json())
+    .then(data => data[0][0][0]);
   }
 
 function translateText(text) {
