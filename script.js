@@ -8,15 +8,8 @@ copyButton.addEventListener('click', copyToClipboard);
 
 function translateHtml() {
   const html = input.value;
-  const text = extractTextFromHtml(html);
-  translateToArabic(text).then(translatedText => {
-    output.value = translatedText;
-  });
-}
-
-function extractTextFromHtml(html) {
-  const text = html.replace(/<[^>]*>/g, '');
-  return text.trim();
+  const translatedHtml = translateToArabic(html);
+  output.value = translatedHtml;
 }
 
 function translateToArabic(text) {
@@ -30,20 +23,33 @@ function translateToArabic(text) {
   };
   const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
   return fetch(url)
-  .then(response => response.json())
-  .then(data => {
+   .then(response => response.json())
+   .then(data => {
       const translatedText = data[0][0][0];
-      return translatedText;
+      const originalHtml = text;
+      const translatedHtml = originalHtml.replace(/<[^>]*>(.*?)<\/[^>]*>/g, (match, group) => {
+        return match.replace(group, translateText(group));
+      });
+      return translatedHtml;
     });
+}
+
+function translateText(text) {
+  const api = 'https://translate.googleapis.com/translate_a/single';
+  const params = {
+    client: 'gtx',
+    sl: 'en',
+    tl: 'ar',
+    dt: 't',
+    q: text
+  };
+  const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
+  return fetch(url)
+   .then(response => response.json())
+   .then(data => data[0][0][0]);
 }
 
 function copyToClipboard() {
   const text = output.value;
-  navigator.clipboard.writeText(text)
-  .then(() => {
-      console.log('Text copied to clipboard');
-    })
-  .catch(err => {
-      console.error('Error copying text to clipboard:', err);
-    });
+  navigator.clipboard.writeText(text);
 }
