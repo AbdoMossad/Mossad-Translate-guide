@@ -19,23 +19,22 @@ function extractTextFromHtml(html) {
 }
 
 function translateToArabic(text) {
-  // You'll need to replace this with your own translation API or library
-  // For demonstration purposes, I'll use a simple Google Translate API
-  const api = 'https://translate.googleapis.com/translate_a/single';
-  const params = {
-    client: 'gtx',
-    sl: 'en',
-    tl: 'ar',
-    dt: 't',
-    q: text
-  };
-  const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
-  fetch(url)
-   .then(response => response.json())
-   .then(data => {
-      const translatedText = data[0][0][0];
-      return translatedText;
-    });
+    const api = 'https://translate.googleapis.com/translate_a/single';
+    const params = {
+      client: 'gtx',
+      sl: 'en',
+      tl: 'ar',
+      dt: 't',
+      q: text
+    };
+    const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
+    return fetch(url)
+     .then(response => response.json())
+     .then(data => {
+        const translatedText = data[0][0][0];
+        return translatedText;
+      });
+  
 }
 
 function copyToClipboard() {
