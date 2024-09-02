@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Translator</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>HTML to Arabic Translator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>HTML Translator</h1>
+  <h1>HTML to Arabic Translator</h1>
+  <textarea id="input" placeholder="Paste HTML code here"></textarea>
+  <button id="translate">Translate</button>
+  <textarea id="output" readonly></textarea>
+  <button id="copy">Copy to Clipboard</button>
 
-    <!-- Input Box for HTML Code -->
-    <label for="htmlInput">Enter HTML Code:</label>
-    <textarea id="htmlInput" placeholder="<h1>Example</h1>"></textarea>
-
-    <!-- Input Box for Manual Replacements -->
-    <label for="replaceInput">Enter Replacements (format: &lt;tag1&gt;|&lt;tag2&gt;):</label>
-    <textarea id="replaceInput" placeholder="<h1>|<p>,<b>|<strong>"></textarea>
-
-    <!-- Button to Translate -->
-    <button onclick="translateHTML()">Translate to Arabic</button>
-
-    <!-- Button to Copy Code -->
-    <button onclick="copyCode()">Copy Code</button>
-
-    <!-- Output Box for Translated HTML -->
-    <div class="output" id="output"></div>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

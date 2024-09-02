@@ -1,39 +1,50 @@
-function translateHTML() {
-    const htmlInput = document.getElementById('htmlInput').value;
-    const replaceInput = document.getElementById('replaceInput').value;
+const input = document.getElementById('input');
+const output = document.getElementById('output');
+const translateButton = document.getElementById('translate');
+const copyButton = document.getElementById('copy');
 
-    // Extract text content and replace tags
-    let translatedHTML = htmlInput;
+translateButton.addEventListener('click', translateHtml);
+copyButton.addEventListener('click', copyToClipboard);
 
-    // Perform manual replacements
-    if (replaceInput) {
-        const replacements = replaceInput.split(',');
-        replacements.forEach(replacement => {
-            const [find, replace] = replacement.split('|');
-            const regex = new RegExp(find, 'gi');
-            translatedHTML = translatedHTML.replace(regex, replace);
-        });
-    }
+function translateHtml() {
+  const html = input.value;
+  const text = extractTextFromHtml(html);
+  const translatedText = translateToArabic(text);
+  output.value = translatedText;
+}
 
-    // Translate text to Arabic using a simple mock function (replace with real translation logic/API)
-    translatedHTML = translatedHTML.replace(/(>[^<]+<)/g, match => {
-        const text = match.slice(1, -1);
-        const translatedText = pseudoTranslateToArabic(text);
-        return `>${translatedText}<`;
+function extractTextFromHtml(html) {
+  const text = html.replace(/<[^>]*>/g, '');
+  return text.trim();
+}
+
+function translateToArabic(text) {
+  // You'll need to replace this with your own translation API or library
+  // For demonstration purposes, I'll use a simple Google Translate API
+  const api = 'https://translate.googleapis.com/translate_a/single';
+  const params = {
+    client: 'gtx',
+    sl: 'en',
+    tl: 'ar',
+    dt: 't',
+    q: text
+  };
+  const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
+  fetch(url)
+   .then(response => response.json())
+   .then(data => {
+      const translatedText = data[0][0][0];
+      return translatedText;
     });
-
-    // Display the translated HTML
-    document.getElementById('output').textContent = translatedHTML;
 }
 
-function pseudoTranslateToArabic(text) {
-    // Mock translation function - Replace with actual translation logic
-    return text.split('').reverse().join(''); // Just a dummy reversal to simulate translation
-}
-
-function copyCode() {
-    const output = document.getElementById('output');
-    navigator.clipboard.writeText(output.textContent)
-        .then(() => alert('Code copied to clipboard!'))
-        .catch(err => console.error('Failed to copy text: ', err));
+function copyToClipboard() {
+  const text = output.value;
+  navigator.clipboard.writeText(text)
+   .then(() => {
+      console.log('Text copied to clipboard');
+    })
+   .catch(err => {
+      console.error('Error copying text to clipboard:', err);
+    });
 }
