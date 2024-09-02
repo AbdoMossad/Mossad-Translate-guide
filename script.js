@@ -12,27 +12,42 @@ function translateHtml() {
   output.value = translatedHtml;
 }
 
-function translateToArabic(text) {
-  const api = 'https://translate.googleapis.com/translate_a/single';
-  const params = {
-    client: 'gtx',
-    sl: 'en',
-    tl: 'ar',
-    dt: 't',
-    q: text
-  };
-  const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
-  return fetch(url)
-   .then(response => response.json())
-   .then(data => {
-      const translatedText = data[0][0][0];
-      const originalHtml = text;
-      const translatedHtml = originalHtml.replace(/<[^>]*>(.*?)<\/[^>]*>/g, (match, group) => {
-        return match.replace(group, translateText(group));
+function translateToArabic(html) {
+    const api = 'https://translate.googleapis.com/translate_a/single';
+    const params = {
+      client: 'gtx',
+      sl: 'en',
+      tl: 'ar',
+      dt: 't',
+      q: html
+    };
+    const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
+  
+    return fetch(url)
+     .then(response => response.json())
+     .then(data => {
+        const translatedText = data[0][0][0];
+        const translatedHtml = html.replace(/>(.*?)</g, (match, group) => {
+          return `>${translateText(group)}<`;
+        });
+        return translatedHtml;
       });
-      return translatedHtml;
-    });
-}
+  }
+  
+  function translateText(text) {
+    const api = 'https://translate.googleapis.com/translate_a/single';
+    const params = {
+      client: 'gtx',
+      sl: 'en',
+      tl: 'ar',
+      dt: 't',
+      q: text
+    };
+    const url = `${api}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`;
+    return fetch(url)
+     .then(response => response.json())
+     .then(data => data[0][0][0]);
+  }
 
 function translateText(text) {
   const api = 'https://translate.googleapis.com/translate_a/single';
