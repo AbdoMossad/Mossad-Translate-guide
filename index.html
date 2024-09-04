@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <link rel="stylesheet" href="styles.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,18 @@
 
     <h2>Translated HTML Preview:</h2>
     <div id="htmlPreview" style="border: 1px solid #ccc; padding: 10px; display: none;"></div>
-
+    <h2>Manual Translations Entries:</h2>
+    <table id="translationTable">
+        <thead>
+            <tr>
+                <th>Find</th>
+                <th>Replace With</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be dynamically added here -->
+        </tbody>
+    </table>
     <script src="translator.js"></script>
     
 </body>

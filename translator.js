@@ -56,7 +56,7 @@ function toggleView() {
         viewButton.textContent = "Show View";
     }
 }
-
+window.onload = loadTranslationEntries;
 function copyToClipboard() {
     const outputHtml = document.getElementById("outputHtml");
     outputHtml.select();
@@ -66,4 +66,19 @@ function copyToClipboard() {
 }
 function redirectToManual() {
     window.location.href = 'manual-translations.html';
+}
+function loadTranslationEntries() {
+    const entries = JSON.parse(localStorage.getItem('translationEntries')) || [];
+    const tableBody = document.querySelector('#translationTable tbody');
+    tableBody.innerHTML = ''; // Clear existing rows
+    entries.forEach(entry => {
+        const row = document.createElement('tr');
+        const findCell = document.createElement('td');
+        const replaceCell = document.createElement('td');
+        findCell.textContent = entry.find;
+        replaceCell.textContent = entry.replace;
+        row.appendChild(findCell);
+        row.appendChild(replaceCell);
+        tableBody.appendChild(row);
+    });
 }
