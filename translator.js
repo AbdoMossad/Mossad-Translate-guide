@@ -1,32 +1,28 @@
-function translateHtml() {
-  const inputHtml = document.getElementById("inputHtml").value;
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(inputHtml, "text/html");
+async function translateText(text) {
+    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ar`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.responseData.translatedText;
+}
 
-  const translations = {
-      "How to Use:": "ارشادات الاستخدام:",
-      "No battery needed": "لاتحتاج بطاريات",
-      "Caution & Warnings:": "التحذيرات و الاحتياطات:",
-      "8 years old and up": "لعمر 8 سنوات فأكبر",
-      "Ingredients:": "المكونات :",
-      "Plastic": "بلاستيك"
-  };
+async function translateNode(node) {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+        node.textContent = await translateText(node.textContent.trim());
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+        for (const child of node.childNodes) {
+            await translateNode(child);
+        }
+    }
+}
 
-  function translateNode(node) {
-      if (node.nodeType === Node.TEXT_NODE) {
-          const trimmedText = node.textContent.trim();
-          if (translations[trimmedText]) {
-              node.textContent = translations[trimmedText];
-          }
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-          node.childNodes.forEach(translateNode);
-      }
-  }
+async function translateHtml() {
+    const inputHtml = document.getElementById("inputHtml").value;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(inputHtml, "text/html");
 
-  doc.body.childNodes.forEach(translateNode);
+    await translateNode(doc.body);
 
-  const serializer = new XMLSerializer();
-  const outputHtml = serializer.serializeToString(doc.body);
-
-  document.getElementById("outputHtml").value = outputHtml;
+    const serializer = new XMLSerializer();
+    const outputHtml = serializer.serializeToString(doc.body);
+    document.getElementById("outputHtml").value = outputHtml;
 }
