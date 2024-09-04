@@ -13,6 +13,7 @@
     <button onclick="translateHtml()">Translate</button>
     <button id="viewButton" onclick="toggleView()">Show View</button>
     <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <button onclick="redirectToManual()">Manual Translations</button>
 
     <h2>Translated HTML Code:</h2>
     <textarea id="outputHtml" rows="10" cols="50" readonly></textarea>
@@ -21,5 +22,10 @@
     <div id="htmlPreview" style="border: 1px solid #ccc; padding: 10px; display: none;"></div>
 
     <script src="translator.js"></script>
+    <script>
+        function redirectToManual() {
+            window.location.href = 'manual-translations.html';
+        }
+    </script>
 </body>
 </html>
