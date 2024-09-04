@@ -5,9 +5,21 @@ async function translateText(text) {
     return data[0][0][0]; // Extract the translated text from the response
 }
 
+function applyManualTranslations(text) {
+    const entries = JSON.parse(localStorage.getItem('translationEntries')) || [];
+    entries.forEach(entry => {
+        const regex = new RegExp(entry.find, 'g');
+        text = text.replace(regex, entry.replace);
+    });
+    return text;
+}
+
 async function translateNode(node) {
     if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
-        node.textContent = await translateText(node.textContent.trim());
+        // Apply manual translations before automated translation
+        let text = applyManualTranslations(node.textContent.trim());
+        // Get automated translation
+        node.textContent = await translateText(text);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         for (const child of node.childNodes) {
             await translateNode(child);
