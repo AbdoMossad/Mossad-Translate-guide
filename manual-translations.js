@@ -57,3 +57,63 @@ function loadEntries() {
 function goBack() {
     window.location.href = 'index.html';
 }
+function exportCSV() {
+    const table = document.querySelector('#translationTable');
+    const rows = Array.from(table.querySelectorAll('tr'));
+    
+    // Extract CSV rows
+    const csvContent = rows.map(row => {
+        const cells = Array.from(row.querySelectorAll('th, td'))
+                            .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`)
+                            .join(',');
+        return cells;
+    }).join('\n');
+    
+    // Create a blob and download it
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'translations.csv';
+    link.click();
+}
+function importCSV() {
+    const fileInput = document.getElementById('csvFileInput');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select a CSV file.');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        const rows = text.split('\n').map(row => row.split(','));
+
+        // Parse CSV rows and add to the table
+        const tableBody = document.querySelector('#translationTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+        rows.forEach(row => {
+            if (row.length >= 2) {
+                const find = row[0].replace(/""/g, '"');
+                const replace = row[1].replace(/""/g, '"');
+                const rowElement = document.createElement('tr');
+                rowElement.innerHTML = `<td>${find}</td><td>${replace}</td><td><button onclick="removeEntry(this)">Remove</button></td>`;
+                tableBody.appendChild(rowElement);
+            }
+        });
+        saveEntries(); // Save imported entries to local storage
+    };
+    reader.readAsText(file);
+}
+function saveEntries() {
+    const entries = [];
+    const rows = document.querySelectorAll('#translationTable tbody tr');
+    rows.forEach(row => {
+        const find = row.cells[0].textContent;
+        const replace = row.cells[1].textContent;
+        entries.push({ find, replace });
+    });
+    localStorage.setItem('translationEntries', JSON.stringify(entries));
+}
+
