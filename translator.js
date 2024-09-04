@@ -1,8 +1,8 @@
 async function translateText(text) {
-    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ar`;
-    const response = await fetch(apiUrl);
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(text)}`;
+    const response = await fetch(url);
     const data = await response.json();
-    return data.responseData.translatedText;
+    return data[0][0][0]; // This extracts the translated text from the response
 }
 
 async function translateNode(node) {
