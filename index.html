@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>HTML to Arabic Translator</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to Arabic Translator</title>
 </head>
 <body>
-  <h1>HTML to Arabic Translator</h1>
-  <textarea id="input" placeholder="Paste HTML code here"></textarea>
-  <button id="translate">Translate</button>
-  <textarea id="output" readonly></textarea>
-  <button id="copy">Copy to Clipboard</button>
+    <h1>HTML to Arabic Translator</h1>
+    <textarea id="inputHtml" placeholder="Enter your HTML code here" rows="10" cols="50"></textarea><br>
+    <button onclick="translateHtml()">Translate</button>
+    <h2>Translated HTML:</h2>
+    <textarea id="outputHtml" rows="10" cols="50" readonly></textarea>
 
-  <script src="script.js"></script>
+    <script src="translator.js"></script>
 </body>
 </html>
