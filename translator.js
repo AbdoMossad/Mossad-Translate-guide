@@ -25,4 +25,5 @@ async function translateHtml() {
     const serializer = new XMLSerializer();
     const outputHtml = serializer.serializeToString(doc.body);
     document.getElementById("outputHtml").value = outputHtml;
+    document.getElementById("htmlPreview").innerHTML = outputHtml;
 }
