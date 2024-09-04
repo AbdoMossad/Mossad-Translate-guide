@@ -60,15 +60,15 @@ function goBack() {
 function exportCSV() {
     const table = document.querySelector('#translationTable');
     const rows = Array.from(table.querySelectorAll('tr'));
-    
+
     // Extract CSV rows
-    const csvContent = rows.map(row => {
+    const csvContent = '\ufeff' + rows.map(row => {
         const cells = Array.from(row.querySelectorAll('th, td'))
                             .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`)
                             .join(',');
         return cells;
     }).join('\n');
-    
+
     // Create a blob and download it
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -76,19 +76,25 @@ function exportCSV() {
     link.download = 'translations.csv';
     link.click();
 }
+
 function importCSV() {
     const fileInput = document.getElementById('csvFileInput');
     const file = fileInput.files[0];
-    
+
     if (!file) {
         alert('Please select a CSV file.');
         return;
     }
-    
+
     const reader = new FileReader();
     reader.onload = function(e) {
         const text = e.target.result;
-        const rows = text.split('\n').map(row => row.split(','));
+
+        // Handle UTF-8 encoding
+        const decoder = new TextDecoder('utf-8');
+        const decodedText = decoder.decode(new Uint8Array(text));
+
+        const rows = decodedText.split('\n').map(row => row.split(','));
 
         // Parse CSV rows and add to the table
         const tableBody = document.querySelector('#translationTable tbody');
@@ -104,8 +110,9 @@ function importCSV() {
         });
         saveEntries(); // Save imported entries to local storage
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
 }
+
 function saveEntries() {
     const entries = [];
     const rows = document.querySelectorAll('#translationTable tbody tr');
