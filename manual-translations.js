@@ -61,10 +61,10 @@ function exportCSV() {
     const table = document.querySelector('#translationTable');
     const rows = Array.from(table.querySelectorAll('tr'));
 
-    // Extract CSV rows
-    const csvContent = '\ufeff' + rows.map(row => {
-        const cells = Array.from(row.querySelectorAll('th, td'))
-                            .map(cell => `"${cell.textContent.replace(/"/g, '""')}"`)
+    // Extract CSV rows, skipping the header row
+    const csvContent = '\ufeff' + rows.slice(1).map(row => {
+        const cells = Array.from(row.querySelectorAll('td'))
+                            .map(cell => `"${cell.textContent.replace(/"/g, '""').replace(/(\r\n|\n|\r)/g, ' ')}"`)
                             .join(',');
         return cells;
     }).join('\n');
@@ -76,6 +76,7 @@ function exportCSV() {
     link.download = 'translations.csv';
     link.click();
 }
+
 
 function importCSV() {
     const fileInput = document.getElementById('csvFileInput');
@@ -96,13 +97,13 @@ function importCSV() {
 
         const rows = decodedText.split('\n').map(row => row.split(','));
 
-        // Parse CSV rows and add to the table
+        // Parse CSV rows and add to the table, skipping the header row
         const tableBody = document.querySelector('#translationTable tbody');
         tableBody.innerHTML = ''; // Clear existing rows
-        rows.forEach(row => {
+        rows.slice(1).forEach(row => { // Skip header row
             if (row.length >= 2) {
-                const find = row[0].replace(/""/g, '"');
-                const replace = row[1].replace(/""/g, '"');
+                const find = row[0].replace(/""/g, '"'); // Handle escaped quotes
+                const replace = row[1].replace(/""/g, '"'); // Handle escaped quotes
                 const rowElement = document.createElement('tr');
                 rowElement.innerHTML = `<td>${find}</td><td>${replace}</td><td><button onclick="removeEntry(this)">Remove</button></td>`;
                 tableBody.appendChild(rowElement);
@@ -112,6 +113,7 @@ function importCSV() {
     };
     reader.readAsArrayBuffer(file);
 }
+
 
 function saveEntries() {
     const entries = [];
