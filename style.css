@@ -4,55 +4,53 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #f9f9f9;
   color: #333;
 }
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
-  background: #fff;
+  background: #ffffff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2, h3 {
-  color: #333;
-}
-
 h1 {
+  color: #4CAF50;
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
 h2 {
+  color: #333;
   font-size: 1.5rem;
-  margin-top: 30px;
+  margin-top: 20px;
   border-bottom: 2px solid #4CAF50;
   padding-bottom: 10px;
 }
 
 h3 {
+  color: #333;
   font-size: 1.2rem;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
-  line-height: 1.5;
   margin-bottom: 10px;
   height: 150px;
   resize: vertical;
+  font-size: 14px;
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #173e92;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -67,11 +65,11 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #5d75dd;
 }
 
 #htmlPreview {
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   padding: 10px;
   background-color: white;
   margin-top: 20px;
@@ -96,7 +94,7 @@ th, td {
 
 th {
   background-color: #f4f4f4;
-  font-weight: bold;
+  color: #333;
 }
 
 tr:nth-child(even) {
@@ -105,7 +103,7 @@ tr:nth-child(even) {
 
 input[type="text"] {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 4px;
   margin: 5px 0;
   width: calc(50% - 12px);
