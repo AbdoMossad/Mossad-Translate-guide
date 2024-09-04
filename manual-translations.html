@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual Translations</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -20,13 +29,35 @@
             background-color: #f2f2f2;
         }
         button {
-            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #translationTable {
+            margin-top: 20px;
+        }
+        #htmlPreview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: white;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Manual Translations</h1>
-    
+
     <h2>Translation Table</h2>
     <table id="translationTable">
         <thead>
@@ -40,13 +71,15 @@
             <!-- Rows will be dynamically added here -->
         </tbody>
     </table>
-    
+
     <h3>Add New Entry</h3>
     <input type="text" id="findText" placeholder="Find text">
     <input type="text" id="replaceText" placeholder="Replace with text">
     <button onclick="addEntry()">Add Entry</button>
     <button onclick="saveEntries()">Save Entries</button>
-    
+
+    <button onclick="goBack()">Back to Main Page</button>
+
     <script src="manual-translations.js"></script>
 </body>
 </html>

@@ -54,3 +54,6 @@ function loadEntries() {
         removeCell.appendChild(removeButton);
     });
 }
+function goBack() {
+    window.location.href = 'index.html';
+}
