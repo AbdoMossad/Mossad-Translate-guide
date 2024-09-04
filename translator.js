@@ -86,3 +86,4 @@ function loadTranslationEntries() {
         tableBody.appendChild(row);
     });
 }
+window.onload = loadTranslationEntries;
