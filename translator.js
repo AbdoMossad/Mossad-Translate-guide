@@ -22,11 +22,12 @@ async function translateHtml() {
 
     await translateNode(doc.body);
 
-    const serializer = new XMLSerializer();
-    const outputHtml = serializer.serializeToString(doc.body);
-    
-    document.getElementById("outputHtml").value = outputHtml;
-    document.getElementById("htmlPreview").innerHTML = outputHtml;
+    // Replace <body> with <div> and set text alignment and direction
+    const translatedContent = doc.body.innerHTML; // Get the inner content of the body
+    const outputDiv = `<div style="text-align: right; direction: rtl;">${translatedContent}</div>`;
+
+    document.getElementById("outputHtml").value = outputDiv;
+    document.getElementById("htmlPreview").innerHTML = outputDiv;
 }
 
 function toggleView() {
