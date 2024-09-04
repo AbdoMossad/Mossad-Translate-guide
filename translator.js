@@ -23,11 +23,14 @@ async function translateHtml() {
     await translateNode(doc.body);
 
     // Replace <body> with <div> and set text alignment and direction
-    const translatedContent = doc.body.innerHTML; // Get the inner content of the body
-    const outputDiv = `<div style="text-align: right; direction: rtl;">${translatedContent}</div>`;
+    let translatedContent = doc.body.innerHTML; // Get the inner content of the body
+    translatedContent = `<div style="text-align: right; direction: rtl;">${translatedContent}</div>`;
 
-    document.getElementById("outputHtml").value = outputDiv;
-    document.getElementById("htmlPreview").innerHTML = outputDiv;
+    // Display the translated HTML code in the textarea
+    document.getElementById("outputHtml").value = translatedContent;
+
+    // Render the translated HTML in the HTML preview div
+    document.getElementById("htmlPreview").innerHTML = translatedContent;
 }
 
 function toggleView() {
