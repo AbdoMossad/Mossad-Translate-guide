@@ -64,3 +64,6 @@ function copyToClipboard() {
     document.execCommand("copy");
     alert("Translated HTML code copied to clipboard!");
 }
+function redirectToManual() {
+    window.location.href = 'manual-translations.html';
+}
