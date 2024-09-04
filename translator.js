@@ -8,7 +8,7 @@ async function translateText(text) {
 function applyManualTranslations(text) {
     const entries = JSON.parse(localStorage.getItem('translationEntries')) || [];
     entries.forEach(entry => {
-        const regex = new RegExp(entry.find, 'g');
+        const regex = new RegExp(entry.find, 'gi'); // Case-insensitive replacement
         text = text.replace(regex, entry.replace);
     });
     return text;
@@ -16,10 +16,9 @@ function applyManualTranslations(text) {
 
 async function translateNode(node) {
     if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
-        // Apply manual translations before automated translation
-        let text = applyManualTranslations(node.textContent.trim());
         // Get automated translation
-        node.textContent = await translateText(text);
+        let translatedText = await translateText(node.textContent.trim());
+        node.textContent = translatedText;
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         for (const child of node.childNodes) {
             await translateNode(child);
@@ -37,6 +36,9 @@ async function translateHtml() {
     // Replace <body> with <div> and set text alignment and direction
     let translatedContent = doc.body.innerHTML; // Get the inner content of the body
     translatedContent = `<div style="text-align: right; direction: rtl;">${translatedContent}</div>`;
+
+    // Apply manual translations to the translated HTML
+    translatedContent = applyManualTranslations(translatedContent);
 
     // Display the translated HTML code in the textarea
     document.getElementById("outputHtml").value = translatedContent;
@@ -56,7 +58,7 @@ function toggleView() {
         viewButton.textContent = "Show View";
     }
 }
-window.onload = loadTranslationEntries;
+
 function copyToClipboard() {
     const outputHtml = document.getElementById("outputHtml");
     outputHtml.select();
@@ -64,9 +66,11 @@ function copyToClipboard() {
     document.execCommand("copy");
     alert("Translated HTML code copied to clipboard!");
 }
+
 function redirectToManual() {
     window.location.href = 'manual-translations.html';
 }
+
 function loadTranslationEntries() {
     const entries = JSON.parse(localStorage.getItem('translationEntries')) || [];
     const tableBody = document.querySelector('#translationTable tbody');
